@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  RS Treinamento & Consultoria — Sistema Escolar ADS
+  Arquivo : aluno.html
+  Função  : Cadastro e listagem de alunos.
+            Página principal após o login.
+            Página protegida — exige login para acessar.
+
+  Dependências:
+    css/style.css → visual
+    js/app.js     → salvarAluno(), renderizarAlunos(),
+                    carregarCursosNoSelect(), fazerLogout()
+  ================================================================
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RS Treinamento — Alunos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- PWA: manifest e ícone para instalação como app -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="theme-color" content="#8B1A2B">
+</head>
+<body style="display:block; padding:0; align-items:unset; justify-content:unset;">
+
+  <!-- ── CABEÇALHO FIXO ── -->
+  <header class="page-header">
+    <div class="page-header-logo">
+      <div class="page-logo">RS</div>
+      <div class="page-logo-text">
+        <h1>RS Treinamento</h1>
+        <p>ADS · Desenvolvimento de Sistemas</p>
+      </div>
+    </div>
+    <button class="btn-sair" onclick="fazerLogout()">Sair</button>
+  </header>
+
+  <!-- ── NAVEGAÇÃO ENTRE PÁGINAS ── -->
+  <nav class="page-nav">
+    <a class="nav-btn ativo" href="aluno.html">Alunos</a>
+    <a class="nav-btn" href="curso.html">Cursos</a>
+  </nav>
+
+  <!-- ── CONTEÚDO PRINCIPAL ── -->
+  <main class="page-body">
+
+    <!-- SEÇÃO: Formulário de cadastro -->
+    <div class="section-title">Cadastro de aluno</div>
+    <div class="section-sub">Preencha os dados do aluno</div>
+
+    <!-- Caixa de erro — começa invisível -->
+    <div class="alert-err" id="erro"></div>
+
+    <!-- Caixa de sucesso — começa invisível -->
+    <div class="alert-ok" id="sucesso">✓ Aluno cadastrado com sucesso!</div>
+
+    <!-- Campo: Nome completo -->
+    <div class="field">
+      <label class="label">Nome completo <span class="req">*</span></label>
+      <input class="input" id="inp-nome" type="text" placeholder="ex: João Silva">
+    </div>
+
+    <!-- Linha com dois campos lado a lado -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+
+      <!-- Campo: Telefone (opcional) -->
+      <div class="field">
+        <label class="label">Telefone</label>
+        <input class="input" id="inp-telefone" type="tel"
+               placeholder="ex: (11) 99999-0000">
+      </div>
+
+      <!-- Campo: E-mail -->
+      <div class="field">
+        <label class="label">E-mail <span class="req">*</span></label>
+        <input class="input" id="inp-email" type="email"
+               placeholder="ex: joao@email.com">
+      </div>
+
+    </div>
+
+    <!-- Campo: Curso (select/dropdown) -->
+    <div class="field">
+      <label class="label">Curso <span class="req">*</span></label>
+      <!--
+        id="sel-curso" → a função carregarCursosNoSelect() em app.js
+        preenche este select com os cursos salvos no localStorage.
+        O aluno precisa cadastrar os cursos primeiro em curso.html.
+      -->
+      <select class="select" id="sel-curso">
+        <option value="">Selecione o curso...</option>
+        <!-- Opções preenchidas pelo JavaScript -->
+      </select>
+      <div class="hint">
+        * Cadastre os cursos em
+        <a href="curso.html" style="color:var(--brand);">Cursos</a>
+        antes de cadastrar alunos
+      </div>
+    </div>
+
+    <!--
+      Botão que chama salvarAluno() definida em app.js.
+    -->
+    <button class="btn" onclick="salvarAluno()">Salvar aluno</button>
+
+    <!-- Botão secundário: atalho para gerenciar cursos -->
+    <button class="btn-outline" onclick="window.location.href='curso.html'">
+      Gerenciar cursos
+    </button>
+
+    <!-- Divisória visual -->
+    <hr class="divider" style="margin-top:24px;">
+
+    <!-- SEÇÃO: Lista de alunos cadastrados -->
+    <div class="list-title">Alunos cadastrados</div>
+
+    <!--
+      id="lista-alunos" → a função renderizarAlunos() em app.js
+      reescreve o conteúdo deste elemento com os alunos do localStorage.
+    -->
+    <div id="lista-alunos">
+      <!-- Preenchido automaticamente pelo JavaScript ao carregar a página -->
+    </div>
+
+  </main>
+
+  <!-- Script principal -->
+  <script src="js/app.js"></script>
+
+  <script>
+    // ----------------------------------------------------------------
+    // Garante que o select de cursos seja preenchido assim que
+    // o DOM estiver pronto — independente do Service Worker ou cache.
+    // DOMContentLoaded dispara antes do 'load', assim que o HTML
+    // termina de ser lido, sem esperar imagens ou scripts externos.
+    // ----------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', function() {
+      carregarCursosNoSelect();
+      renderizarAlunos();
+    });
+
+    // PWA: registra o Service Worker que permite uso offline
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(function() { console.log("SW registrado com sucesso"); })
+        .catch(function(err) { console.log("Erro no SW:", err); });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  RS Treinamento & Consultoria — Sistema Escolar ADS
+  Arquivo : curso.html
+  Função  : Cadastro e listagem de cursos.
+            Página protegida — exige login para acessar.
+
+  Dependências:
+    css/style.css → visual
+    js/app.js     → salvarCurso(), renderizarCursos(), fazerLogout()
+  ================================================================
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RS Treinamento — Cursos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="display:block; padding:0; align-items:unset; justify-content:unset;">
+<!--
+  style inline no body: as páginas internas têm layout diferente
+  do login/usuario — não centralizado, mas em bloco normal.
+-->
+
+  <!-- ── CABEÇALHO FIXO ── -->
+  <header class="page-header">
+    <div class="page-header-logo">
+      <div class="page-logo">RS</div>
+      <div class="page-logo-text">
+        <h1>RS Treinamento</h1>
+        <p>ADS · Desenvolvimento de Sistemas</p>
+      </div>
+    </div>
+    <!--
+      onclick="fazerLogout()" → definido em app.js
+      Remove a sessão e volta para login.html
+    -->
+    <button class="btn-sair" onclick="fazerLogout()">Sair</button>
+  </header>
+
+  <!-- ── NAVEGAÇÃO ENTRE PÁGINAS ── -->
+  <nav class="page-nav">
+    <!--
+      Links de navegação entre as telas do sistema.
+      A classe "ativo" destaca a página atual.
+    -->
+    <a class="nav-btn" href="aluno.html">Alunos</a>
+    <a class="nav-btn ativo" href="curso.html">Cursos</a>
+  </nav>
+
+  <!-- ── CONTEÚDO PRINCIPAL ── -->
+  <main class="page-body">
+
+    <!-- SEÇÃO: Formulário de cadastro -->
+    <div class="section-title">Cadastro de curso</div>
+    <div class="section-sub">Cursos disponíveis para matrícula</div>
+
+    <!-- Caixa de erro — começa invisível -->
+    <div class="alert-err" id="erro"></div>
+
+    <!-- Caixa de sucesso — começa invisível -->
+    <div class="alert-ok" id="sucesso">✓ Curso cadastrado com sucesso!</div>
+
+    <!-- Campo: Nome do curso -->
+    <div class="field">
+      <label class="label">Nome do curso <span class="req">*</span></label>
+      <input class="input" id="inp-curso" type="text"
+             placeholder="ex: Engenharia de Software">
+    </div>
+
+    <!--
+      Botão que chama salvarCurso() definida em app.js.
+      A função valida, salva no localStorage e chama renderizarCursos().
+    -->
+    <button class="btn" onclick="salvarCurso()">Salvar curso</button>
+
+    <!-- Divisória visual -->
+    <hr class="divider" style="margin-top:24px;">
+
+    <!-- SEÇÃO: Lista de cursos cadastrados -->
+    <div class="list-title">Cursos cadastrados</div>
+
+    <!--
+      id="lista-cursos" → a função renderizarCursos() em app.js
+      reescreve o conteúdo deste elemento com os cursos do localStorage.
+    -->
+    <div id="lista-cursos">
+      <!-- Preenchido automaticamente pelo JavaScript ao carregar a página -->
+    </div>
+
+  </main>
+
+  <!-- Script no final do body -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>
